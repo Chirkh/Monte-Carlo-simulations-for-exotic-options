@@ -3,7 +3,7 @@ In particular this file contains monte carlo simulations of spread call options 
 This file also contains an implementation of stochastic heston volatility and the resulting 
 implied volatility smile. To calculate implied vol we use the Newton Raphson method. There are also some 
 simple implementations of antithetic and control variates for vanilla european options which can be extended
-to more exotic contracts. To generate correlated Brownina motions traditional Cholesky decmoposition methods 
+to more exotic contracts. To generate correlated Brownian motions traditional Cholesky decmoposition methods 
 have been used as well as numpy's built in multivariable random normal sampler.
 """
 

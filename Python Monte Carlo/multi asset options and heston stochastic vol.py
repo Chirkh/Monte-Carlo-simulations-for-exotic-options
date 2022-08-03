@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
 """
-Created on Sun Jul 31 11:21:37 2022
-
-@author: Chirayu
-
 In particular this file contains monte carlo simulations of spread call options and baskets of underlyings.
 This file also contains an implementation of stochastic heston volatility and the resulting 
 implied volatility smile. To calculate implied vol we use the Newton Raphson method. There are also some 
@@ -73,7 +68,6 @@ def spread_call_option(S1, S2, K, r, T, sigma, sim_no, steps, correlation_mat, c
         for j in range(steps):
             epsilon=np.random.normal(0,1,size=(2,))
             phis=np.matmul(M,epsilon)
-            #S=S*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phis))
             S1_t=S1_t*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phis[0]))
             S2_t=S2_t*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phis[1]))
         if call:

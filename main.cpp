@@ -219,8 +219,6 @@ double lookback_call(const double S,
 
 int main()
 {
-
-    cout << "Hello world!" << endl;
     cout << lookback_call(100.0, 110.0,0.05, 0.25,0.5, 5000, 100) << endl; // Uses analytic solution to price european vanilla call
     cout << arithmetic_asian_call(100.0, 102, 0.05, 0.25, 0.5, 5000, 100) << endl;
     cout << european_vanilla_call(100.0, 110.0, 0.05, 0.25, 0.5, 100000) << endl; // Uses monte carlo to price vanilla euro call

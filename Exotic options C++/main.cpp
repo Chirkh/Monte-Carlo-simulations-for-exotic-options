@@ -227,5 +227,3 @@ int main()
     return 0;
 }
 
-// The only issue is that the random number generator has the same seed every time so every time it is called it prints the same set of random
-// numbers. But this does not effect the validity of Monte Carlo estimates.

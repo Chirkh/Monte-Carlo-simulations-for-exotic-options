@@ -45,7 +45,7 @@ def antithetic_european_option(S,K,r,T,sigma,sim_no,steps, call=True):
     for i in range(sim_no):
         phi=np.random.normal()
         S_t1= S_t1*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phi))
-        S_t2= S_t2*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phi))
+        S_t2= S_t2*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*(-phi)))
         if call:
             tot_payoff+=(max(S_t1-K,0)+max(S_t2-K,0))/2 # Add average of both paths payoffs which are inversely correlated
         else:

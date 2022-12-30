@@ -10,3 +10,6 @@ Repository also contains Monte Carlo pricing for methods for a variety of multi-
 
 ![volatiltiy smile](https://user-images.githubusercontent.com/91262171/182554043-f5fbd234-742b-4997-ac37-92865017a36e.png)
 
+### Dependencies
+NumPy
+

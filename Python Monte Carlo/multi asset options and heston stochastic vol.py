@@ -88,13 +88,14 @@ def option_basket_call(S ,K, r, T, sigma, sim_no, correlation_mat, weights, call
     '''
     tot_payoff=0
     S=np.array(S)
+    S_0=S
     weights=np.array(weights)
     dt=T/sim_no
     M=cholesky(correlation_mat, lower=True)
     for i in range(sim_no):
         epsilon=np.random.normal(0,1,size=(len(S),))
         phis=np.matmul(M,epsilon)
-        S=S*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phis))
+        S=S_0*np.exp((r-0.5*sigma**2)*dt+(sigma*dt**0.5*phis))
         if call:
             tot_payoff+=max(np.sum(S*weights)-K,0)
         else:

@@ -12,6 +12,10 @@ Python library of methods to price variety of options products and other derivat
   1) Time spreads
   2) Butterflies
   3) Straddles etc
+* Pricing exotic single asset options:
+  1) Asian options (Arithmetic and Geometric)
+  2) Lookback options 
+  3) Barrier options
 * Multi-Asset options
   1) Option baskets
   2) Rainbow options

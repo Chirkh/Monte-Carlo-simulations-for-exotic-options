@@ -29,7 +29,7 @@ NumPy and SciPy
 
 
 
-## Miscellaneous simulations outside of MCLib
+## Miscellaneous simulations outside of MCoptions
 ### C++
 Respository contains variety of functions for calculating the price of numerous different exotic options such as Asian options, in and out barrier options and lookback options using Monte Carlo methods. Also contains a function for implementing Heston's model for stochastic volatility to generate random paths of underlying stock and contains analytic solutions to Black Scholes equations for vanilla european calls.
 

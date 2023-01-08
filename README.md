@@ -1,7 +1,7 @@
 # Monte-Carlo-simulations-for-exotic-options
 
 ## MCoptions
-Python library for pricing variety of options products and other derivative products using Monte Carlo methods and Black-Scholes analytic equations. Library also has functionality for calculating greeks both using finite difference methods and using analytic solutions where possible.
+Python library of methods to price variety of options products and other derivative products using Monte Carlo methods and Black-Scholes analytic equations. Library also has functionality for calculating greeks both using finite difference methods and using analytic solutions where possible.
 
 ## Core Functionalities
 * Pricing vanilla call and put options using:

@@ -16,7 +16,7 @@ Python library of methods to price variety of options products and other derivat
   1) Asian options (Arithmetic and Geometric)
   2) Lookback options 
   3) Barrier options
-* Multi-Asset options
+* Multi-Asset options, using correlation between asset prices
   1) Option baskets
   2) Rainbow options
 * Greeks using finite difference and analytic solutions where possible
@@ -26,7 +26,7 @@ Python library of methods to price variety of options products and other derivat
   4) Rho
   5) Theta
 
-Note: not all relevant functions have yet been vectorised for optimal efficiency in Monte Carlo simulations.
+
 ## Dependencies
 NumPy and SciPy
   

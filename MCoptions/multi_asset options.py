@@ -61,7 +61,7 @@ class option_basket:
         
     
     def MC_price_cholesky(self, sim_no=500, steps=200):
-        ''' Will vectorise this in the future'''
+        ''' Implementation using cholesky decomp, not vectorised'''
         tot_payoff=0
         dt=self.T/steps
         M=cholesky(self.corr, lower=True)
@@ -99,7 +99,9 @@ class option_basket:
         mean=tot_payoff/sim_no
         return np.exp(-self.r*self.T)*mean
                            
-        
+'''
+#TEST
 s=option_basket([100,150], 90, 0.02, 1, 0.05, [[1,0.7],[0.7,1]], [1,1], 'call')
 print(s.MC_price_cholesky())
+'''
 

@@ -16,6 +16,10 @@ Python library of methods to price variety of options products and other derivat
   1) Asian options (Arithmetic and Geometric)
   2) Lookback options 
   3) Barrier options
+* Pricing American options:
+  1) Calls and Puts
+  2) Using Binomial model/ dynamic programming
+  3) Using Least Squares Monte Carlo
 * Multi-Asset options, using correlation between asset prices
   1) Option baskets
   2) Rainbow options
@@ -28,7 +32,7 @@ Python library of methods to price variety of options products and other derivat
 
 
 ## Dependencies
-NumPy and SciPy
+NumPy, Sklearn and SciPy
   
 
 

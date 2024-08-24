@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.stats import norm
-from scipy.linalg import cholesky 
+from scipy.linalg import cholesky
+from  sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
 
 class option_vanilla:
     
@@ -398,3 +400,120 @@ class barrier_option(Asian_option):
                          
         return np.exp(-self.r*self.T)*(tot_payoff/sim_no)
 
+
+
+class american_option:
+    # Class implementing functionalities of an American option
+    # Will include binomial/dynamic programming pricing approach and LSMC
+    def __init__(self, S_0, K, T, r, sigma, Type='put'):
+        self.S_0 = S_0  # Initial price
+        self.K = K      # Strike
+        self.T = T      # Time to expiration
+        self.r = r      # Risk-free interest rate
+        self.sigma = sigma  # Volatility, initial volatility if stochastic
+        if Type != 'call' and Type != 'put':
+            raise Exception("Invalid option type, try 'put' or 'call'.")
+        self.Type = Type
+
+    def payoff(self, x):
+        if self.Type == 'call':
+            return np.maximum(x - self.K, 0)
+        else:
+            return np.maximum(self.K - x, 0)
+
+    def price_path_matrix(self, sim_no, steps):
+        prices = np.zeros((sim_no, steps))
+        prices[:, 0] = self.S_0
+        dt = self.T / (steps - 1)
+        for i in range(1, steps):
+            rands = np.random.normal(scale=dt**0.5, size=sim_no)
+            prices[:, i] = prices[:, i-1] * np.exp((self.r - 0.5*self.sigma**2) * dt + self.sigma * rands)
+        return prices
+
+    def binomial_price(self, sim_no, dt):
+        steps = int(self.T / dt) + 1
+        prices = self.price_path_matrix(sim_no, steps)
+
+        discount = np.exp(-self.r * dt)
+        
+        vals = np.zeros((sim_no, steps))
+        vals[:, -1] = self.payoff(prices[:, -1])
+
+        for i in range(steps - 2, -1, -1):
+            node_val = discount * 0.5 * (vals[:, i + 1])
+            early_val = self.payoff(prices[:, i])
+
+            vals[:, i] = np.maximum(node_val, early_val)
+        return np.mean(vals[:, 0])  # Average the values at t=0 for all paths
+
+    def LSMC_price(self, sim_no=500, dt=0.2, poly_degree=2, verbose=False):
+        # Verbose is used to also print the decision matrix
+        steps = int(self.T / dt) + 1
+        prices = self.price_path_matrix(sim_no, steps)
+        decision_matrix = np.zeros((sim_no, steps))
+        cashflows = np.zeros((sim_no, steps))
+
+        if self.Type == 'call':
+            cashflows[:, -1] = np.maximum(prices[:, -1] - self.K, 0)
+        else:
+            cashflows[:, -1] = np.maximum(self.K - prices[:, -1], 0)
+        decision_matrix[:, -1] = (cashflows[:, -1] > 0).astype(int)
+
+        for i in range(steps - 2, -1, -1):
+            # Get path_indices where option is in the money to carry out regression
+            if self.Type == 'put':
+                path_indices = np.where(prices[:, i] < self.K)[0]
+            else:
+                path_indices = np.where(prices[:, i] > self.K)[0]
+
+            if path_indices.size > 0:
+                X = prices[path_indices, i]
+                Y = np.zeros(prices[:, i][path_indices].shape)
+                t = 0
+
+                for j in range(i + 1, steps):
+                    t += 1
+                    Y += cashflows[path_indices, j] * np.exp(-self.r * t * dt)
+                
+                poly_model = PolynomialFeatures(poly_degree)
+                X_poly = poly_model.fit_transform(X.reshape(-1, 1))
+                reg = LinearRegression()
+                reg.fit(X_poly, Y)
+                continuation_vals = reg.predict(X_poly)
+
+                exercise_values = self.payoff(X)
+                
+                early_indices = np.where(exercise_values > continuation_vals)[0]
+
+                if early_indices.size > 0:
+                    cashflows[path_indices[early_indices], i] = exercise_values[early_indices]
+                    decision_matrix[path_indices[early_indices], i] = 1
+                    for j in range(i + 1, steps):
+                        cashflows[path_indices[early_indices], j] = 0
+                        decision_matrix[path_indices[early_indices], j] = 0
+
+        discounted_cashflows = np.sum(cashflows * np.exp(-self.r * np.arange(steps) * dt), axis=1)
+        
+        if verbose:
+            print('Decision Matrix:')
+            print(decision_matrix)
+            print('\n')
+            print('Cashflow Matrix: ')
+            print(cashflows)
+
+        return np.mean(discounted_cashflows)
+
+                
+
+
+                
+                
+                
+            
+            
+        
+        
+        
+        
+        
+        
